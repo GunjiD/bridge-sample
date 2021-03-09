@@ -23,6 +23,11 @@ int InitRawSocket(char *device,int promiscFlag, int ipOnly)
     struct sockaddr_ll  sa;
     int soc;
 
+
+
+    /***
+     * socket() を使用してデータリンク層を扱うディスクリプタを得る
+     ***/
     if(ipOnly){
         if((soc=socket(PF_PACKET,SOCK_RAW,htons(ETH_P_IP)))<0){
             perror("socket");
@@ -35,4 +40,45 @@ int InitRawSocket(char *device,int promiscFlag, int ipOnly)
             return(-1);
         }
     }
+
+
+
+    /***
+     * ioctl() を使用して、ネットワークインターフェース名に対応した
+     * インターフェースのインデックスを得る
+    ***/
+    memset(&ifreq,0,sizeof(struct ifreq));
+    strncpy(ifreq.ifr_name,device,sizeof(ifreq.ifr_name)-1);
+    if(ioctl(soc,SIOCGIFINDEX,&ifreq)<0){
+        perror("ioctl");
+        close(soc);
+        return(-1);
+    }
+
+
+
+    /***
+    * ioctl() で取得したインターフェースのインデックス、プロトコルファミリ、
+    * プロトコルを sockadd_ll 構造体にセットし bind() する。
+    ***/
+   sa.sll_family=PF_PACKET;
+   if(ipOnly){
+       sa.sll_protocol=htons(ETH_P_IP);
+   }
+   else{
+       sa.sll_protocol=htons(ETH_P_ALL);
+   }
+
+   sa.sll_ifindex=ifreq.ifr_ifindex=ifreq.ifr_ifindex;
+   if(bind(soc,(struct sockaddr *)&sa,sizeof(sa))<0){
+       perror("bind");
+       close(soc);
+       return(-1);
+   }
+
+
+
+    /***
+    * 
+    ***/
 }
