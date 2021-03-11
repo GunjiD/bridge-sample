@@ -59,7 +59,7 @@ int InitRawSocket(char *device,int promiscFlag, int ipOnly)
 
     /***
     * ioctl() で取得したインターフェースのインデックス、プロトコルファミリ、
-    * プロトコルを sockadd_ll 構造体にセットし bind() する。
+    * プロトコルを sockaddr_ll 構造体にセットし bind() する。
     ***/
    sa.sll_family=PF_PACKET;
    if(ipOnly){
@@ -79,6 +79,42 @@ int InitRawSocket(char *device,int promiscFlag, int ipOnly)
 
 
     /***
-    * 
+    * プロミスキャスモードを有効にする場合、ioctl() で
+    * SIOCGIFFLAGS を指定してデバイスのフラグを取得し
+    * ifreq.ifr_flags|IFF_PROMISC でビットを1にし
+    * SIOCSIFFLAGS を指定した ioctl() で書き込む
     ***/
+   if(promiscFlag){
+       if(ioctl(soc,SIOCGIFFLAGS,&ifreq)<0){
+           perror("ioctl");
+           close(soc);
+           return(-1);
+       }
+       ifreq.ifr_flags=ifreq.ifr_flags|IFF_PROMISC;
+       if(ioctl(soc,SIOCSIFFLAGS,&ifreq)<0){
+           perror("ioctl");
+           close(soc);
+           return(-1);
+       }
+   }
+
+
+   return(soc);
+}
+
+
+
+/***
+ * MAC アドレスを文字列形式に変換する関数
+ * char *my_ether_ntoa_r(
+ * u_char *hwaddr, 
+ * char *buff, 
+ * socklen_t size
+ * )
+ ***/
+char *my_ether_ntoa_r(u_char *hwaddr, char *buff, socklen_t size){
+    snprintf(buf, size, "%02x:%02x:%02x:%02x:%02x:%02x",
+        hwaddr[0],hwaddr[1],hwaddr[2],hwaddr[3],hwaddr[4],hwaddr[5]);
+
+        return(buf);
 }
