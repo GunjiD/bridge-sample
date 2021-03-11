@@ -112,7 +112,7 @@ int InitRawSocket(char *device,int promiscFlag, int ipOnly)
  * socklen_t size
  * )
  ***/
-char *my_ether_ntoa_r(u_char *hwaddr, char *buff, socklen_t size){
+char *my_ether_ntoa_r(u_char *hwaddr, char *buf, socklen_t size){
     snprintf(buf, size, "%02x:%02x:%02x:%02x:%02x:%02x",
         hwaddr[0],hwaddr[1],hwaddr[2],hwaddr[3],hwaddr[4],hwaddr[5]);
 
@@ -187,7 +187,7 @@ int main(int argc, char *argv[], char *envp[])
                 PrintEthernetHeader((struct ether_header *)buf, stdout);
             }
             else{
-                fprintf(stderr, "read size(%d) < %d\n", size, sizeof(struct ether_header));
+                fprintf(stderr, "read size(%d) < %ld\n", size, sizeof(struct ether_header));
             }
         }
     }
