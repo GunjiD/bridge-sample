@@ -128,7 +128,7 @@ char *my_ether_ntoa_r(u_char *hwaddr, char *buff, socklen_t size){
  * FILE *fp                     出力先ファイルポインタ
  * )
  ***/
-<list>int PrintEthernetHeader(struct ether_header *eh, FILE *fp)
+int PrintEthernetHeader(struct ether_header *eh, FILE *fp)
 {
     char    buf[80];
 
