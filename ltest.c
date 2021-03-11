@@ -156,3 +156,43 @@ int PrintEthernetHeader(struct ether_header *eh, FILE *fp)
 
     return(0);
 }
+
+
+
+/***
+ * 起動時の引数にネットワークインターフェース名を指定
+ ***/
+int main(int argc, char *argv[], char *envp[])
+{
+    int     soc,size;
+    u_char  buf[2048];
+
+    if(argc <= 1){
+        fprintf(stderr, "ltest device-name \n");
+        return(1);
+    }
+
+    if((soc = InitRawSocket(argv[1], 0, 0)) == -1){
+        fprintf(stderr, "InitRawSocket:error:%s\n",argv[1]);
+        return(-1);
+    }
+
+    while (1)
+    {
+        if(size = read(soc, buf, sizeof(buf)) <= 0){
+            perror("read");
+        }
+        else{
+            if(size >= sizeof(struct ether_header)){
+                PrintEthernetHeader((struct ether_header *)buf, stdout);
+            }
+            else{
+                fprintf(stderr, "read size(%d) < %d\n", size, sizeof(struct ether_header));
+            }
+        }
+    }
+
+    close(soc);
+
+    return(0);   
+}
