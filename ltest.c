@@ -153,5 +153,6 @@ int PrintEthernetHeader(struct ether_header *eh, FILE *fp)
         fprintf(fp, "(unknown)\n");
         break;
     }
-    
+
+    return(0);
 }
