@@ -97,6 +97,40 @@ int AnalyzeIcmp(u_char *data, int size)
 
 
 /***
+ *  ICMPv6の解析関数
+ * int AnalyzeIcmp(
+ * u_char *data,
+ * int size
+ * )
+ ***/
+int AnalyzeIcmp6(u_char *data, int size)
+{
+    u_char *ptr;
+    int     lest;
+    struct icmp6_hdr    *icmp6;
+
+
+    ptr = data;
+    lest = size;
+
+
+    if(lest < sizeof(struct icmp6_hdr)){
+        fprintf(stderr, "lest(%d) < sizeof(struct icmp6_hdr)\n", lest);
+        return(-1);
+    }
+    icmp6 = (struct icmp6_hdr *)ptr;
+    ptr += sizeof(struct icmp6_hdr);
+    lest -= sizeof(struct icmp6_hdr);
+
+
+    PrintIcmp6(icmp6, stdout);
+
+    return(0);
+}
+
+
+
+/***
  *  TCPの解析関数
  * int AnalyzeTcp(
  * u_char *data,
