@@ -8,6 +8,7 @@
 #include    <net/ethernet.h>
 #include    <netpacket/packet.h>
 #include    <netinet/if_ether.h>
+#include    <netinet/ip.h>
 #include    "Analyze.h"
 
 /***
@@ -135,7 +136,7 @@ int main(int argc, char *argv[], char *envp[])
         }
     }
 
-    
+
 
     close(soc);
 
