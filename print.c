@@ -283,7 +283,42 @@ int PrintIpHeader(struct ip_header *ip_hdr, u_char *option, int optionLen, FILE 
     return(0);
 }
 
-int PrintIp6Header(struct ip6_hdr *ip6, FILE *fp);
+
+
+/***
+ * IPv6 ヘッダの表示関数
+ * int PrintIp6Header(
+ * struct ip6_hdr *ip6, 
+ * FILE *fp
+ * )
+***/
+int PrintIp6Header(struct ip6_hdr *ip6, FILE *fp)
+{
+    char    buf[80];
+
+
+    fprintf(fp, "ip6-----------------------------------------------\n");
+
+    fprintf(fp, "ip6_flow=%x,", ip6->ip6_flow);
+    fprintf(fp, "ip6_plen=%d,", ntohs(ip6->ip6_plen));
+    fprintf(fp, "ip6_nxt=%u,", ip6->ip6_nxt);
+    if(ip6->ip6_nxt <= 17){
+        fprintf(fp, "(%s),", Proto[ip6->ip6_nxt]);
+    }
+    else{
+        fprintf(fp, "(undefined),");
+    }
+    fprintf(fp, "ip6_hlim=%d,", ip6->ip6_hlim);
+
+    fprintf(fp, "ip6_src=%s\n", inet_ntop(AF_INET6, &ip6->ip6_src, buf, sizeof(buf)));
+    fprintf(fp, "ip6_dst=%s\n", inet_ntop(AF_INET6, &ip6->ip6_dst, buf, sizeof(buf)));    
+    
+
+    return(0);
+}
+
+
+
 int PrintIcmp(struct icmp *icmp, FILE *fp);
 int PrintIcmp6(struct icmp6_hdr *icmp6, FILE *fp);
 int PrintTcp(struct tcphdr *tcphdr, FILE *fp);
