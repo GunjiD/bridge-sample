@@ -14,6 +14,7 @@
 #include    <netinet/icmp6.h>
 #include    <netinet/tcp.h>
 #include    <netinet/udp.h>
+#include    "analyze.h"
 #include    "checksum.h"
 #include    "print.h"
 
