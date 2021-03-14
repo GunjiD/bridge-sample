@@ -373,7 +373,54 @@ int PrintIcmp(struct icmp *icmp, FILE *fp)
 
 
 
+/***
+ * ICMPv6 の表示関数
+ * int PrintIcmp6(
+ * struct icmp6_hdr *icmp6, 
+ * FILE *fp
+ * )
+***/
+int PrintIcmp6(struct icmp6_hdr *icmp6, FILE *fp){
 
-int PrintIcmp6(struct icmp6_hdr *icmp6, FILE *fp);
+
+    fprintf(fp, "icmp6---------------------------------------------\n");
+
+
+    fprintf(fp, "icmp6_type=%u", icmp6->icmp6_type);
+    if(icmp6->icmp6_type == 1){
+        fprintf(fp, "(Destination Unreachable),");
+    }
+    else if(icmp6->icmp6_type == 2){
+        fprintf(fp, "(Packet too Big),");
+    }
+    else if(icmp6->icmp6_type == 3){
+        fprintf(fp, "(Time Exceeded),");
+    }
+    else if(icmp6->icmp6_type == 4){
+        fprintf(fp, "(Parameter Problem),");
+    }
+    else if(icmp6->icmp6_type == 128){
+        fprintf(fp, "(Echo Request),");
+    }
+    else if(icmp6->icmp6_type == 129){
+        fprintf(fp, "(Echo Reply),");
+    }
+    else{
+        fprintf(fp, "(undefined),");
+    }
+    fprintf(fp, "icmp6_code=%u,", icmp6->icmp6_code);
+    fprintf(fp, "icmp6_cksum=%u\n", ntohs(icmp6->icmp6_cksum));
+
+
+    if(icmp6->icmp6_type == 128 || icmp6->icmp6_type == 129){
+        fprintf(fp, "icmp6_id=%u,", ntohs(icmp6->icmp6_id));
+        fprintf(fp, "icmp6_seq=%u\n", ntohs(icmp6->icmp6_seq));        
+    }
+
+    
+    return(0);
+}
+
+
 int PrintTcp(struct tcphdr *tcphdr, FILE *fp);
 int PrintUdp(struct udphdr *udphdr, FILE *fp);
