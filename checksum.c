@@ -40,7 +40,47 @@ struct pseudo_ip6_hdr{
 
 
 
-u_int16_t checksum(u_char *data, int len);
+/***
+ * チェックサム計算関数
+ * u_int16_t checksum(
+ * u_char *data, 
+ * int len
+ * )
+***/
+u_int16_t checksum(u_char *data, int len)
+{
+    register u_int32_t  sum;
+    register u_int16_t  *ptr;
+    register int        c;
+
+
+    sum = 0;
+    ptr = (u_int16_t *)data;
+
+
+    for(c = len; c > 1; c -= 2){
+        sum += (*ptr);
+        if(sum & 0x80000000){
+            sum = (sum & 0xFFFF) + (sum >> 16);
+        }
+        ptr++;
+    }
+    if(c == 1){
+        u_int16_t   val;
+        val = 0;
+        memcpy(&val, ptr, sizeof(u_int8_t));
+        sum += val;
+    }
+
+
+    while (sum >> 16){
+        sum = (sum & 0xFFFF) + (sum >> 16);
+    }
+
+
+    return(0);    
+}
+
 u_int16_t checksum2(u_char *data1, int len1, u_char *data2 int len2);
 int checkIPchecksum(struct iphdr *iphdr, u_char *option, int optionLen);
 int checkIPDATAchecksum(struct iphdr *iphdr, unsigned char *data, int len);
