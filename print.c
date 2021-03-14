@@ -319,7 +319,61 @@ int PrintIp6Header(struct ip6_hdr *ip6, FILE *fp)
 
 
 
-int PrintIcmp(struct icmp *icmp, FILE *fp);
+/***
+ * ICMP ヘッダの表示関数
+ * int PrintIcmp(
+ * struct icmp *icmp, 
+ * FILE *fp
+ * )
+***/
+int PrintIcmp(struct icmp *icmp, FILE *fp)
+{
+    static char     *icmp_type[] = {
+        "Echo Reply",
+        "undefined",
+        "undefined",
+        "Destination Unreachable",
+        "Source Quench",
+        "Redirect",
+        "undefined",
+        "Echo Request",
+        "Router Adverisement",
+        "Router Selection",
+        "Time Exceeded for Datagram",
+        "Parameter Problem on Datagram",
+        "Timestamp Request",
+        "Timestamp Reply",
+        "Information Request",
+        "Information Reply",
+        "Address Mask Request",
+        "Address Mask Reply"
+    };
+
+
+    fprintf(fp, "icmp----------------------------------------------\n");
+
+    fprintf(fp, "icmp_type=%u", icmp->icmp_type);
+    if(icmp->icmp_type <= 18){
+        fprintf(fp, "(%s),", icmp->icmp_type);
+    }
+    else{
+        fprintf(fp, "(undefined),");
+    }
+    fprintf(fp, "icmp_code=%u,", icmp->icmp_code);
+    fprintf(fp, "icmp_cksum=%u\n", ntohs(icmp->icmp_cksum));
+    
+    if(icmp->icmp_type == 0 || icmp->icmp_type == 8){
+        fprintf(fp, "icmp_id=%u,", ntohs(icmp->icmp_id));
+        fprintf(fp, "icmp_seq=%u\n", ntohs(icmp->icmp_seq));
+    }
+    
+    
+    return(0);
+}
+
+
+
+
 int PrintIcmp6(struct icmp6_hdr *icmp6, FILE *fp);
 int PrintTcp(struct tcphdr *tcphdr, FILE *fp);
 int PrintUdp(struct udphdr *udphdr, FILE *fp);
