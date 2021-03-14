@@ -17,6 +17,15 @@
 #include    "print.h"
 
 
+
+/***
+ * MACアドレスを文字列化する関数
+ * char *my_ether_nota_r(
+ * u_char *hwaddr, 
+ * char *buf, 
+ * socklen_t size
+ * )
+***/
 char *my_ether_nota_r(u_char *hwaddr, char *buf, socklen_t size)
 {
     snprintf(buf, size, "%02x:%02x:%02x:%02x:%02x:%02x",
@@ -24,12 +33,32 @@ char *my_ether_nota_r(u_char *hwaddr, char *buf, socklen_t size)
     return buf;
 }
 
+
+
+/***
+ * ARP ヘッダの IP アドレスを文字列化する関数
+ * char *arp_ip2str(
+ * u_int8_t *ip, 
+ * char *buf, 
+ * socklen_t size
+ * )
+***/
 char *arp_ip2str(u_int8_t *ip, char *buf, socklen_t size)
 {
     snprintf(buf, size, "%u.%u.%u.%u", ip[0],ip[1],ip[2],ip[3]);
     return buf;
 }
 
+
+
+/***
+ * iphdr で u_int32_t の IP アドレスを文字列化する関数
+ * char *ip_ip2str(
+ * u_int32_t ip, 
+ * char *buf, 
+ * socklen_t size
+ * )
+***/
 char *ip_ip2str(u_int32_t ip, char *buf, socklen_t size)
 {
     struct in_addr  *addr;
@@ -41,6 +70,15 @@ char *ip_ip2str(u_int32_t ip, char *buf, socklen_t size)
     return(buf);
 }
 
+
+
+/***
+ * 
+ * int PrintEtherHeader(
+ * struct ether_header *eh, 
+ * FILE *fp
+ * )
+***/
 int PrintEtherHeader(struct ether_header *eh, FILE *fp)
 {
     char buf[80];
@@ -68,6 +106,15 @@ int PrintEtherHeader(struct ether_header *eh, FILE *fp)
     return(0);
 }
 
+
+
+/***
+ * ARP ヘッダを表示する関数
+ * int PrintArp(
+ * struct ether_arp *arp, 
+ * FILE *fp
+ * )
+***/
 int PrintArp(struct ether_arp *arp, FILE *fp)
 {
     static char *hrd[] = {
@@ -162,6 +209,7 @@ int PrintArp(struct ether_arp *arp, FILE *fp)
 
 
 
+// プロトコルのリスト
 static char     *Proto[] = {
     "undefined",
     "ICMP",
@@ -185,6 +233,15 @@ static char     *Proto[] = {
 
 
 
+/***
+ * IP ヘッダの表示関数
+ * int PrintIpHeader(
+ * struct ip_header *ip_hdr, 
+ * u_char *option, 
+ * int optionLen, 
+ * FILE *fp
+ * )
+***/
 int PrintIpHeader(struct ip_header *ip_hdr, u_char *option, int optionLen, FILE *fp)
 {
     int     i;
