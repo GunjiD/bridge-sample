@@ -186,7 +186,7 @@ int AnalyzeUdp(u_char *data, int size)
         fprintf(stderr, "lest(%d) < sizeof(struct udphdr)\n", lest);
         return(-1);
     }
-    arp = (struct udphdr *)ptr;
+    udphdr = (struct udphdr *)ptr;
     ptr += sizeof(struct udphdr);
     lest -= sizeof(struct udphdr);
 
@@ -271,7 +271,7 @@ int AnalyzeIp(u_char *data, int size)
     }
     else if(iphdr->protocol == IPPROTO_UDP){
         struct udphdr   *udphdr;
-        udphdr = (struct udphdr)ptr;
+        udphdr = (struct udphdr *)ptr;
         len = ntohs(iphdr->tot_len) - iphdr->ihl * 4;
         if(udphdr->check != 0 && checkIPDATAchecksum(iphdr, ptr, len) == 0){
             fprintf(stderr, "bad udp checksum\n");

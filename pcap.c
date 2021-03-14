@@ -9,7 +9,7 @@
 #include    <netpacket/packet.h>
 #include    <netinet/if_ether.h>
 #include    <netinet/ip.h>
-#include    "Analyze.h"
+#include    "analyze.h"
 
 /***
  * int InitRawSocket(

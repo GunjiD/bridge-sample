@@ -30,8 +30,8 @@ struct pseudo_ip{
 };
 
 struct pseudo_ip6_hdr{
-    struct ip6_addr  src;
-    struct ip6_addr  dst;
+    struct in6_addr  src;
+    struct in6_addr  dst;
     unsigned long    plen;
     unsigned short   dmy1;
     unsigned char    dmy2;
@@ -91,7 +91,7 @@ u_int16_t checksum(u_char *data, int len)
  * u_char *data2 int len2
  * )
 ***/
-u_int16_t checksum2(u_char *data1, int len1, u_char *data2 int len2)
+u_int16_t checksum2(u_char *data1, int len1, u_char *data2, int len2)
 {
     register u_int32_t  sum;
     register u_int16_t  *ptr;

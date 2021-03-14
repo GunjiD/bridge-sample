@@ -214,7 +214,7 @@ static char     *Proto[] = {
     "undefined",
     "ICMP",
     "IGMP",
-    "undefined".
+    "undefined",
     "IPIP",
     "undefined",
     "TCP",
@@ -242,7 +242,7 @@ static char     *Proto[] = {
  * FILE *fp
  * )
 ***/
-int PrintIpHeader(struct ip_header *ip_hdr, u_char *option, int optionLen, FILE *fp)
+int PrintIpHeader(struct iphdr *iphdr, u_char *option, int optionLen, FILE *fp)
 {
     int     i;
     char    buf[80];
@@ -354,7 +354,7 @@ int PrintIcmp(struct icmp *icmp, FILE *fp)
 
     fprintf(fp, "icmp_type=%u", icmp->icmp_type);
     if(icmp->icmp_type <= 18){
-        fprintf(fp, "(%s),", icmp->icmp_type);
+        fprintf(fp, "(%s),", icmp_type[icmp->icmp_type]);
     }
     else{
         fprintf(fp, "(undefined),");
