@@ -147,6 +147,40 @@ u_int16_t checksum2(u_char *data1, int len1, u_char *data2 int len2)
 
 
 
-int checkIPchecksum(struct iphdr *iphdr, u_char *option, int optionLen);
+/***
+ * IP ヘッダのチェックサムを確認する関数
+ * int checkIPchecksum(
+ * struct iphdr *iphdr, 
+ * u_char *option, 
+ * int optionLen
+ * )
+***/
+int checkIPchecksum(struct iphdr *iphdr, u_char *option, int optionLen)
+{
+    unsigned short  sum;
+
+
+    if(optionLen == 0){
+        sum = checksum((u_char *)iphdr, sizeof(struct iphdr));
+        if(sum == 0 || sum == 0xFFFF){
+            return(1);
+        }
+        else{
+            return(0);
+        }
+    }
+    else{
+        sum = checksum2((u_char *)iphdr, sizeof(struct iphdr), option, optionLen);
+        if(sum == 0 || sum == 0xFFFF){
+            return(1);
+        }
+        else{
+            return(0);
+        }
+    }
+}
+
+
+
 int checkIPDATAchecksum(struct iphdr *iphdr, unsigned char *data, int len);
 int checkIP6DATAchecksum(struct ip6_hdr *ip, unsigned char *data, int len);
