@@ -85,7 +85,7 @@ int InitRawSocket(char *device, int promiscFlag, int ipOnly)
  * socklen_t size
  * )
 ***/
-char *my_ether_nota_r(u_char *hwaddr, char *buf, socklen_t size)
+char *my_ether_ntoa_r(u_char *hwaddr, char *buf, socklen_t size)
 {
     snprintf(buf, size, "%02x:%02x:%02x:%02x:%02x:%02x",
             hwaddr[0], hwaddr[1], hwaddr[2], hwaddr[3], hwaddr[4], hwaddr[5]);
@@ -94,7 +94,7 @@ char *my_ether_nota_r(u_char *hwaddr, char *buf, socklen_t size)
 
 
 
-int PrintEthernetHeader(struct ether_header *eh, FILE *fp)
+int PrintEtherHeader(struct ether_header *eh, FILE *fp)
 {
     char    buf[80];
 

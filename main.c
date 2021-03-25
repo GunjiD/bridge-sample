@@ -47,7 +47,7 @@ int DebugPrintf(char *fmt,...)
 
 
 
-intDebugPerror(char *msg)
+int DebugPerror(char *msg)
 {
     if(Param.DebugOut){
         fprintf(stderr, "%s : %s\n", msg, strerror(errno));
@@ -145,7 +145,7 @@ int DisableIpForward()
     FILE    *fp;
 
 
-    if(fp = open("/proc/sys/net/ipv4/ip_forward", "w") == NULL){
+    if(fp = fopen("/proc/sys/net/ipv4/ip_forward", "w") == NULL){
         DebugPrintf("cannot write /proc/sys/net/ipv4/ip_forward\n");
         return(-1);
     }
@@ -158,7 +158,7 @@ int DisableIpForward()
 
 
 
-void Endsignal(int sig)
+void EndSignal(int sig)
 {
     Endflag = 1;
 }
