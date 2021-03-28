@@ -19,7 +19,7 @@ typedef struct {
     int     DebugOut;
 }PARAM;
 //  環境に合わせて変更
-PARAM   Param = {"eth0", "eth1", 0};
+PARAM   Param = {"eth0", "veth0", 0};
 
 typedef struct {
     int     soc;
@@ -145,7 +145,7 @@ int DisableIpForward()
     FILE    *fp;
 
 
-    if(fp = fopen("/proc/sys/net/ipv4/ip_forward", "w") == NULL){
+    if((fp = fopen("/proc/sys/net/ipv4/ip_forward", "w")) == NULL){
         DebugPrintf("cannot write /proc/sys/net/ipv4/ip_forward\n");
         return(-1);
     }
